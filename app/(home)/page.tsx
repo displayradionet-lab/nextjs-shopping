@@ -4,6 +4,8 @@ import data from "@/lib/data";
 
 export default function Page() {
   return (
-   <HomeCarousel items={data.carousels} />
+   <HomeCarousel items={data.carousel} />
   );
 }
+
+
