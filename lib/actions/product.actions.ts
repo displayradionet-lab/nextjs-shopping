@@ -25,6 +25,7 @@ export async function getProductsForCard({
   const products = await Product.find(
     { tags: { $in: [tag] }, isPublished: true },
     {
+      _id: 1,
       name: 1,
       href: { $concat: ['/product/', '$slug'] },
       image: { $arrayElemAt: ['$images', 0] },
@@ -33,6 +34,51 @@ export async function getProductsForCard({
     .sort({ createdAt: 'desc' })
     .limit(limit);
   return JSON.parse(JSON.stringify(products)) as {
+    _id: string;
+    name: string;
+    href: string;
+    image: string;
+  }[];
+}
+
+export async function getProductsByCategory({
+  category,
+  limit = 20,
+}: {
+  category: string;
+  limit?: number;
+}) {
+  await connectToDatabase();
+
+  const products = await Product.find({ category, isPublished: true })
+    .sort({ createdAt: 'desc' })
+    .limit(limit);
+
+  return JSON.parse(JSON.stringify(products)) as IProduct[];
+}
+
+export async function getProductsForCardByCategory({
+  category,
+  limit = 20,
+}: {
+  category: string;
+  limit?: number;
+}) {
+  await connectToDatabase();
+
+  const products = await Product.find(
+    { category, isPublished: true },
+    {
+      _id: 1,
+      name: 1,
+      href: { $concat: ['/product/', '$slug'] },
+      image: { $arrayElemAt: ['$images', 0] },
+    }
+  )
+    .sort({ createdAt: 'desc' })
+    .limit(limit);
+  return JSON.parse(JSON.stringify(products)) as {
+    _id: string;
     name: string;
     href: string;
     image: string;
