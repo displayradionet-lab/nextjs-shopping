@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import ProductCard from '@/components/shared/product/product-card'
 import { IProduct } from '@/lib/db/models/product.models'
 import { getProductsByCategory } from '@/lib/actions/product.actions'
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
   const [products, setProducts] = useState<IProduct[]>([])
@@ -47,5 +47,13 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading...</div>}>
+      <SearchContent />
+    </Suspense>
   )
 }

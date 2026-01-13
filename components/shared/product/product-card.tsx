@@ -6,10 +6,10 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { IProduct } from '@/lib/db/models/product.models';
 
 import Rating from './rating';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber, generateId } from '@/lib/utils';
 import ProductPrice from './product-price';
 import ImageHover from './image-hover';
-// import AddToCart from '@/components/shared/product/add-to-cart'; // Ensure this path is correct and the component exists
+import AddToCart from '@/components/shared/product/add-to-cart';
 
 
 const ProductCard = ({  
@@ -26,17 +26,17 @@ const ProductCard = ({
 }) => {
   const ProductImage = () => (
     <Link href={`/product/${product.slug}`}>
-      <div className="relative h-52">
-        {product.images.length > 1 ? (
+      <div className="relative h-52 w-full">
+        {product.images && product.images.length > 1 ? (
           <ImageHover
             src={product.images[0]}
             hoverSrc={product.images[1]}
             alt={product.name}
           />
         ) : (
-          <div className="h-50 relative">
+          <div className="relative h-full w-full">
             <Image
-              src={product.images[0]}
+              src={product.images?.[0] || '/images/banner1.jpg'}
               alt={product.name}
               fill
               sizes="70vw"
@@ -76,27 +76,27 @@ const ProductCard = ({
     </div>
   );
 
-//   const AddButton = () => (
-//     <div className='w-full text-center'>
-//       <AddToCart 
-//         minimal={true}
-//         item={{
-//           clientId: generateId(),        
-//           product: product._id,
-//           size: product.sizes?.[0] || '',
-//           color: product.colors?.[0] || '', 
-//           countInStock: product.countInStock ?? 0, 
-//           name: product.name,
-//           slug: product.slug,
-//           category: product.category,
-//           price: round2(product.price),
-//           quantity: 1,
-//           image: product.images?.[0] || '',           
-//         }}
-//         toast='success'
-//       />
-//     </div>
-//   )
+  const AddButton = () => (
+    <div className='w-full text-center'>
+      <AddToCart 
+        minimal={true}
+        item={{
+          clientId: generateId(),        
+          product: product._id.toString(),
+          name: product.name,
+          slug: product.slug,
+          category: product.category,
+          quantity: 1,
+          countInStock: product.countInStock,
+          image: product.images?.[0] || '/images/banner1.jpg',
+          price: product.price,
+          size: product.sizes?.[0] || '',
+          color: product.colors?.[0] || '',           
+        }}
+      />
+    </div>
+  )
+
 
   return hideBorder ? (
     <div className="flex flex-col">
@@ -106,7 +106,7 @@ const ProductCard = ({
           <div className="p-3 flex-1 text-center">
             <ProductDetails />
           </div>
-          {/* {!hideAddToCart && <AddButton />} */}
+          {!hideAddToCart && <AddButton />}
         </>
       )}
     </div>
@@ -121,7 +121,7 @@ const ProductCard = ({
             <ProductDetails />
           </CardContent>
           <CardFooter className='p-3'>
-            {/* {!hideAddToCart && <AddButton />} */}
+            {!hideAddToCart && <AddButton />}
           </CardFooter>
         </>
       )}

@@ -84,6 +84,7 @@ export const OrderItemSchema = z.object({
   size: z.string().optional(),
   color: z.string().optional(),
 });
+
 export const ShippingAddressSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
   street: z.string().min(1, 'Street is required'),
@@ -129,8 +130,8 @@ export const OrderInputSchema = z.object({
   paidAt: z.date().optional(),
   isPaid: z.boolean().default(false),
 });
-// Cart
 
+// Cart
 export const CartSchema = z.object({
   items: z
     .array(OrderItemSchema)
@@ -256,3 +257,5 @@ export const SettingInputSchema = z.object({
   //   .min(1, 'At least one delivery date is required'),
   // defaultDeliveryDate: z.string().min(1, 'Delivery date is required'),
 });
+
+

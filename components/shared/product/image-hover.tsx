@@ -26,7 +26,7 @@ const ImageHover = ({
 
   return (
     <div
-      className="relative h-50"
+      className="relative h-full w-full"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -44,7 +44,7 @@ const ImageHover = ({
         alt={alt}
         fill
         sizes='90vw'
-        className={`absolute inset-0 object-cover transition-opacity duration-300 ${
+        className={`absolute inset-0 object-contain transition-opacity duration-300 ${
           isHovered ? 'opacity-100' : 'opacity-0'
         }`}
       />
