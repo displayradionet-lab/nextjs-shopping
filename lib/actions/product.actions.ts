@@ -59,7 +59,7 @@ export async function getProductsByCategory({
 
 export async function getProductsForCardByCategory({
   category,
-  limit = 20,
+  limit = 10,
 }: {
   category: string;
   limit?: number;

@@ -8,7 +8,7 @@ process.env.NEXT_PUBLIC_APP_DESCRIPTION || 'A Shop clone built with Next.js, and
 export const PAGE_SIZE = Number(process.env.NEXT_PUBLIC_APP_SIZE || 9);
 
 export const FREE_SHIPPING_MIN_PRICE = Number(
-  process.env.FREE_SHIPPING_MIN_PRICE || 35
+  process.env.FREE_SHIPPING_MIN_PRICE || 3
 )
 
 export const AVAILABLE_DELIVERY_DATES = [
@@ -28,6 +28,6 @@ export const AVAILABLE_DELIVERY_DATES = [
     name: 'Next 5 days',
     daysToDelivery: 5,
     shippingPrice: 4.9,
-    freeShippingMinPrice: 35,
+    freeShippingMinPrice: 3,
   }
 ]
