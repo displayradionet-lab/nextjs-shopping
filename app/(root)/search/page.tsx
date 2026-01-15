@@ -3,13 +3,13 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import ProductCard from '@/components/shared/product/product-card'
-import { IProduct } from '@/lib/db/models/product.models'
+import { IProductData } from '@/types'
 import { getProductsByCategory } from '@/lib/actions/product.actions'
 
 function SearchContent() {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
-  const [products, setProducts] = useState<IProduct[]>([])
+  const [products, setProducts] = useState<IProductData[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

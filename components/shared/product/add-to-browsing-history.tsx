@@ -14,7 +14,7 @@ export default function AddToBrowsingHistory({
     useEffect(()=>{
         console.log('addItem({id, category})')
         addItem({id, category})
-
+8
     },[])
     return null
 }

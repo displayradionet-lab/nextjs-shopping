@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import ProductCard from './product-card';
-import { IProduct } from '@/lib/db/models/product.models';
+import { IProductData } from '@/types';
 
 export default function ProductSlider({
     title,
@@ -11,7 +11,7 @@ export default function ProductSlider({
     hideDetails = false,
 }: {
     title: string;
-    products: IProduct[];
+    products: IProductData[];
     hideDetails?: boolean;
 }) {
     return (

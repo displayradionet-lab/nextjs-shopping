@@ -3,6 +3,7 @@
 import { connectToDatabase } from '@/lib/db';
 import Product, { IProduct } from '@/lib/db/models/product.models';
 import { PAGE_SIZE } from '@/lib/constants';
+import { IProductData } from '@/types';
 
 
 export async function getAllCategories() {
@@ -54,7 +55,7 @@ export async function getProductsByCategory({
     .sort({ createdAt: 'desc' })
     .limit(limit);
 
-  return JSON.parse(JSON.stringify(products)) as IProduct[];
+  return JSON.parse(JSON.stringify(products)) as IProductData[];
 }
 
 export async function getProductsForCardByCategory({
@@ -102,7 +103,7 @@ export async function getProductsByTag({
     .sort({ createdAt: 'desc' })
     .limit(limit);
 
-  return JSON.parse(JSON.stringify(products)) as IProduct[];
+  return JSON.parse(JSON.stringify(products)) as IProductData[];
 }
 
 // GET PRODUCT BY SLUG
@@ -110,7 +111,7 @@ export async function getProductBySlug(slug: string) {
   await connectToDatabase();
   const product = await Product.findOne({ slug, isPublished: true });
   if (!product) throw new Error('Product not found');
-  return JSON.parse(JSON.stringify(product)) as IProduct;
+  return JSON.parse(JSON.stringify(product)) as IProductData;
 }
 
 // GET RELATED PRODUCTS: PRODUCTS WITH SAME CATEGORY
@@ -140,7 +141,7 @@ export async function getRelatedProductsByCategory({
     .limit(limit);
   const productsCount = await Product.countDocuments(conditions);
   return {
-    data: JSON.parse(JSON.stringify(products)) as IProduct[],
+    data: JSON.parse(JSON.stringify(products)) as IProductData[],
     totalPages: Math.ceil(productsCount / limit),
   };
 }

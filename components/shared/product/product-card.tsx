@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { IProduct } from '@/lib/db/models/product.models';
+import { IProductData } from '@/types';
 
 import Rating from './rating';
 import { formatNumber, generateId } from '@/lib/utils';
@@ -19,7 +19,7 @@ const ProductCard = ({
   hideAddToCart = false,
 }: {
   
-  product: IProduct;
+  product: IProductData;
   hideBorder?: boolean;
   hideDetails?: boolean;
   hideAddToCart?: boolean;

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { IProduct } from '@/lib/db/models/product.models';
+import { IProductData } from '@/types';
 import Link from 'next/link';
 
 export default function SelectVariant({
@@ -7,7 +7,7 @@ export default function SelectVariant({
   size,
   color,
 }: {
-  product: IProduct;
+  product: IProductData;
   size: string;
   color: string;
 }) {

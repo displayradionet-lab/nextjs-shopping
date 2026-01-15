@@ -15,8 +15,6 @@ import AddToBrowsingHistory from '@/components/shared/product/add-to-browsing-hi
 import AddToCart from '@/components/shared/product/add-to-cart';
 import { generateId, round2 } from '@/lib/utils';
 
-
-
 // import RatingSummary from '@/components/shared/product/rating-summary';
 // import ReviewList from './review-list';
 // import { auth } from '@/auth';
