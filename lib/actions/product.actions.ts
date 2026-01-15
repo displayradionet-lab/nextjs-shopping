@@ -128,7 +128,6 @@ export async function getRelatedProductsByCategory({
 }) {
   await connectToDatabase();
   const skipAmount = (Number(page) - 1) * limit;
-
   const conditions = {
     isPublished: true,
     category,

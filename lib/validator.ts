@@ -147,48 +147,48 @@ export const CartSchema = z.object({
 });
 
 // USER
-// const UserName = z
-//   .string()
-//   .min(2, { message: 'Username must be at least 2 characters long' })
-//   .max(50, { message: 'Username must be at most 30 characters long' });
-// const Email = z
-//   .string()
-//   .min(1, { message: 'Email is required' })
-//   .email('Email is invalid');
-// const Password = z.string().min(3, 'Password must be at least 3 characters');
-// const UserRole = z.string().min(1, 'Role is required');
+const UserName = z
+  .string()
+  .min(2, { message: 'Username must be at least 2 characters long' })
+  .max(50, { message: 'Username must be at most 50 characters long' });
+const Email = z
+  .string()
+  .min(1, { message: 'Email is required' })
+  .email('Email is invalid');
+const Password = z.string().min(3, 'Password must be at least 3 characters');
+const UserRole = z.string().min(1, 'Role is required');
 
-// export const UserInputSchema = z.object({
-//   name: UserName,
-//   email: Email,
-//   image: z.string().optional(),
-//   emailVerified: z.boolean(),
-//   password: Password,
-//   role: UserRole,
-//   paymentMethod: z.string().min(1, 'Payment method is required'),
-//   address: z.object({
-//     fullName: z.string().min(1, 'Full name is required'),
-//     street: z.string().min(1, 'Street is required'),
-//     city: z.string().min(1, 'City is required'),
-//     province: z.string().min(1, 'Province is required'),
-//     postalCode: z.string().min(1, 'Postal code is required'),
-//     country: z.string().min(1, 'Country is required'),
-//     phone: z.string().min(1, 'Phone number is required'),
-//   }),
-// });
+export const UserInputSchema = z.object({
+  name: UserName,
+  email: Email,
+  image: z.string().optional(),
+  emailVerified: z.boolean(),
+  password: Password,
+  role: UserRole,
+  paymentMethod: z.string().min(1, 'Payment method is required'),
+  address: z.object({
+    fullName: z.string().min(1, 'Full name is required'),
+    street: z.string().min(1, 'Street is required'),
+    city: z.string().min(1, 'City is required'),
+    province: z.string().min(1, 'Province is required'),
+    postalCode: z.string().min(1, 'Postal code is required'),
+    country: z.string().min(1, 'Country is required'),
+    phone: z.string().min(1, 'Phone number is required'),
+  }),
+});
 
-// export const UserSignInSchema = z.object({
-//   email: Email,
-//   password: Password,
-// });
+export const UserSignInSchema = z.object({
+  email: Email,
+  password: Password,
+});
 
-// export const UserSignUpSchema = UserSignInSchema.extend({
-//   name: UserName,
-//   confirmPassword: Password,
-// }).refine((data) => data.password === data.confirmPassword, {
-//   message: "Passwords don't match",
-//   path: ['confirmPassword'],
-// });
+export const UserSignUpSchema = UserSignInSchema.extend({
+  name: UserName,
+  confirmPassword: Password,
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+});
 
 // export const UserNameSchema = z.object({
 //   name: UserName,
