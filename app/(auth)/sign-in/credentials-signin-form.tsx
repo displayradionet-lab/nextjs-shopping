@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserSignInSchema } from '@/lib/validator';
 import { signInWithCredentials } from '@/lib/actions/user.actions';
-import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { toast } from 'react-hot-toast';
 import {
   Form,
@@ -52,19 +51,13 @@ export default function CredentialsSignInForm() {
 
   const onSubmit = async (data: IUserSignIn) => {
     try {
-      const result = await signInWithCredentials({
+      await signInWithCredentials({
         email: data.email,
         password: data.password,
       });
-      
-      if (result) {
-        redirect(callbackUrl);
-      }
+      redirect(callbackUrl);
     } catch (error) {
-      if (isRedirectError(error)) {
-        throw error;
-      }
-      toast.error('Invalid email or password');
+      toast('Invalid email or password');
     }
   };
 

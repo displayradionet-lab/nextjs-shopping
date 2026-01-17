@@ -8,13 +8,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { SignOut } from '@/lib/actions/user.actions';
 import { cn } from '@/lib/utils';
 import { ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
+import SignOutButton from './sign-out-button';
 
 export default async function UserButton() {
   const session = await auth();
+  
   return (
     <div className="flex gap-2 items-center">
       <DropdownMenu>
@@ -28,7 +29,7 @@ export default async function UserButton() {
           </div>
         </DropdownMenuTrigger>
         {session ? (
-          <DropdownMenuContent className="w-38 bg-white/50 align='end" forceMount>
+          <DropdownMenuContent className="w-38 bg-white/50 align-end" forceMount>
             <DropdownMenuLabel className="font-normal ">
               <div className="flex flex-col  space-y-1">
                 <p className="text-md mb-1 lg:text-white font-medium leading-none">
@@ -50,14 +51,7 @@ export default async function UserButton() {
               )}
             </DropdownMenuGroup>
             <DropdownMenuItem className="p-0 mb-1">
-              <form action={SignOut} className="w-full">
-                <Button
-                  className="w-full py-4 px-2 h-4 justify-start"
-                  variant="ghost"
-                >
-                  Sign Out
-                </Button>
-              </form>
+              <SignOutButton />
             </DropdownMenuItem>
           </DropdownMenuContent>
         ) : (

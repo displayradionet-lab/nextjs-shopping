@@ -10,8 +10,8 @@ export default {
                 /\/account(\/.*)?/,
                 /\/admin(\/.*)?/,
             ]
-            const { pathName } = request.nextUrl
-            if (protectedPaths.some((p) => p.test(pathName))) return !!auth
+            const { pathname } = request.nextUrl
+            if (protectedPaths.some((p) => p.test(pathname))) return !!auth
             return true
         },
     },

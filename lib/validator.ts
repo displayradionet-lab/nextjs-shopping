@@ -150,7 +150,7 @@ export const CartSchema = z.object({
 const UserName = z
   .string()
   .min(2, { message: 'Username must be at least 2 characters long' })
-  .max(50, { message: 'Username must be at most 50 characters long' });
+  .max(50, { message: 'Username must be at most 30 characters long' });
 const Email = z
   .string()
   .min(1, { message: 'Email is required' })
@@ -182,13 +182,13 @@ export const UserSignInSchema = z.object({
   password: Password,
 });
 
-export const UserSignUpSchema = UserSignInSchema.extend({
-  name: UserName,
-  confirmPassword: Password,
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+// export const UserSignUpSchema = UserSignInSchema.extend({
+//   name: UserName,
+//   confirmPassword: Password,
+// }).refine((data) => data.password === data.confirmPassword, {
+//   message: "Passwords don't match",
+//   path: ['confirmPassword'],
+// });
 
 // export const UserNameSchema = z.object({
 //   name: UserName,

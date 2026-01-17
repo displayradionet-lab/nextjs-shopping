@@ -19,9 +19,9 @@ declare module 'next-auth' {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   pages: {
-    signIn: '/signin',
-    newUser: '/signup',
-    error: '/signin',
+    signIn: '/sign-in',
+    newUser: '/sign-up',
+    error: '/sign-in',
   },
   session: {
     strategy: 'jwt',
@@ -89,7 +89,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.name = token.name as string;
         if (trigger === 'update') {
             session.user.name = user.name as string;
-    }
+        }
         return session;  
     }
   },

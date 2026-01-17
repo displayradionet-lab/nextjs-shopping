@@ -1,4 +1,4 @@
-import { CartSchema, OrderItemSchema, ProductInputSchema, ShippingAddressSchema, UserInputSchema, UserSignInSchema } from "@/lib/validator";
+import { CartSchema, OrderItemSchema, ProductInputSchema, UserInputSchema, UserSignInSchema, ShippingAddressSchema } from "@/lib/validator";
 import z from "zod";
 
 
