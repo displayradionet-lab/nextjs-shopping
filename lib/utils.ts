@@ -68,3 +68,73 @@ export const formatError = (error: any): string => {
   }
 };
 
+export function calculateFutureDate(days: number) {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + days);
+  return currentDate;
+}
+
+export function getMonthName(yearAndMonth: string) {
+  const [year, monthNumber] = yearAndMonth.split('-');
+  const date = new Date();
+  date.setMonth(parseInt(monthNumber) - 1);
+  return new Date().getMonth() === parseInt(monthNumber) - 1
+    ? `${date.toLocaleString('default', { month: 'long' })} (ongoing)`
+    : date.toLocaleString('default', { month: 'long' });
+}
+
+export function calculatePastDate(days: number) {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - days);
+  return currentDate;
+}
+
+export function timeUntilMidnight(): { hours: number; minutes: number } {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+
+  const diff = midnight.getTime() - now.getTime();
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  return { hours, minutes };
+}
+
+export const formatDateTime = (dateString: Date) => {
+  const dateTimeOptions: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    year: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    year: 'numeric',
+    day: 'numeric',
+  };
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+  const formatterDateTime: string = new Date(dateString).toLocaleString(
+    'en-US',
+    dateTimeOptions
+  );
+  const formatterDate: string = new Date(dateString).toLocaleString(
+    'en-US',
+    dateOptions
+  );
+  const formatterTime: string = new Date(dateString).toLocaleString(
+    'en-US',
+    timeOptions
+  );
+  return {
+    dateTime: formatterDateTime,
+    dateOnly: formatterDate,
+    timeOnly: formatterTime,
+  };
+};

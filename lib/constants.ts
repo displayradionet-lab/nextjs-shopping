@@ -13,6 +13,27 @@ export const FREE_SHIPPING_MIN_PRICE = Number(
   process.env.FREE_SHIPPING_MIN_PRICE || 3
 )
 
+export const AVAILABLE_PAYMENT_METHODS = [
+  {
+    name: 'Paypal',
+    commission: 0,
+    isDefault: true,
+  },
+  {
+    name: 'Stripe',
+    commission: 0,
+    isDefault: false,
+  },
+  {
+    name: 'Cash On Delivery',
+    commission: 0,
+    isDefault: false,
+  },
+]
+
+export const DEFAULT_PAYMENT_METHOD = 
+process.env.DEFAULT_PAYMENT_METHOD || 'Paypal'
+
 export const AVAILABLE_DELIVERY_DATES = [
   {
     name: 'Tomorrow',
@@ -30,6 +51,6 @@ export const AVAILABLE_DELIVERY_DATES = [
     name: 'Next 5 days',
     daysToDelivery: 5,
     shippingPrice: 4.9,
-    freeShippingMinPrice: 3,
+    freeShippingMinPrice: 35,
   }
 ]
