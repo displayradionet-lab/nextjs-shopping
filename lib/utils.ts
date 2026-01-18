@@ -43,15 +43,16 @@ export const round2 = (num: number) =>
 export const generateId = () =>
   Array.from({ length: 24 }, () => Math.floor(Math.random() * 10)).join('');
 
-
 export const formatError = (error: any): string => {
-  if (error.name === 'ZodError') {
-    const fliedErrors = Object.keys(error.errors).map((field) => {
-      const errorMessage = error.errors[field].Message;
+  if (error.name === 'ZodError' && error.errors) {
+    console.log('ZodError details:', error.errors);
+    const fieldErrors = Object.keys(error.errors).map((field) => {
+      const errorMessage = error.errors[field].message;
       return `${error.errors[field].path}: ${errorMessage}`;
     });
-    return fliedErrors.join('. ');
-  } else if (error.name === 'ValidationError') {
+    return fieldErrors.join('. ');
+  } else if (error.name === 'ValidationError' && error.errors) {
+    console.log('ValidationError details:', error.errors);
     const fieldErrors = Object.keys(error.errors).map((field) => {
       const errorMessage = error.errors[field].message;
       return errorMessage;
@@ -61,10 +62,8 @@ export const formatError = (error: any): string => {
     const duplicateField = Object.keys(error.keyValue)[0];
     return `${duplicateField} already exists`;
   } else {
-    // return 'Something went wrong, please try again'
-    return typeof error.message === 'string'
-      ? error.message
-      : JSON.stringify(error.message);
+    console.log('Generic error:', error);
+    return error.message || 'An unknown error occurred';
   }
 };
 

@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-// import { createOrder } from '@/lib/actions/order.actions'
+import { createOrder } from '@/lib/actions/order.actions'
 import {
   calculateFutureDate,
   formatDateTime,
@@ -118,26 +118,43 @@ const CheckoutForm = () => {
     useState<boolean>(false);
 
   const handlePlaceOrder = async () => {
-//     const res = await createOrder({
-//       items,
-//       shippingAddress,
-//       expectedDeliveryDate: calculateFutureDate(
-//         AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDelivery
-//       ),
-//       deliveryDateIndex,
-//       paymentMethod,
-//       itemsPrice,
-//       shippingPrice,
-//       taxPrice,
-//       totalPrice,
-//     })
-//     if (!res.success) {
-//       toast('Something went wrong')
-//     } else {
-//       toast('Success')
-//       clearCart()
-//       router.push(`/checkout/${res.data?.orderId}`)
-//     }
+    console.log('Placing order with data:', {
+      items,
+      shippingAddress,
+      expectedDeliveryDate: calculateFutureDate(
+        AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDelivery
+      ),
+      deliveryDateIndex,
+      paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    });
+    
+    const res = await createOrder({
+      items,
+      shippingAddress,
+      expectedDeliveryDate: calculateFutureDate(
+        AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDelivery
+      ),
+      deliveryDateIndex,
+      paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    })
+    
+    console.log('Order creation response:', res);
+    
+    if (!res.success) {
+      toast(res.error || 'Something went wrong')
+    } else {
+      toast('Success')
+      clearCart()
+      router.push(`/checkout/${res.data?.orderId}`)
+    }
   };
 
   const handleSelectPaymentMethod = () => {

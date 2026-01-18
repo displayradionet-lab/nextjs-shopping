@@ -13,7 +13,7 @@ const initialState: Cart = {
   totalPrice: 0,
   paymentMethod: undefined,
   shippingAddress: undefined,
-  deliveryDateIndex: undefined,
+  deliveryDateIndex: 0, // Set default to first delivery option
 };
 
 interface CartState {

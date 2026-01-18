@@ -82,14 +82,14 @@ const ProductCard = ({
         minimal={true}
         item={{
           clientId: generateId(),        
-          product: product._id.toString(),
-          name: product.name,
-          slug: product.slug,
-          category: product.category,
+          product: product._id?.toString() || '',
+          name: product.name || '',
+          slug: product.slug || '',
+          category: product.category || '',
           quantity: 1,
-          countInStock: product.countInStock,
+          countInStock: product.countInStock || 0,
           image: product.images?.[0] || '/images/banner1.jpg',
-          price: product.price,
+          price: product.price || 0,
           size: product.sizes?.[0] || '',
           color: product.colors?.[0] || '',           
         }}
