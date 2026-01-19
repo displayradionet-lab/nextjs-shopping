@@ -199,9 +199,9 @@ export const UserSignUpSchema = UserSignInSchema.extend({
 });
 
 
-// export const UserNameSchema = z.object({
-//   name: UserName,
-// })
+export const UserNameSchema = z.object({
+  name: UserName,
+})
 
 // export const SiteCurrencySchema = z.object({
 //   name: z.string().min(1, 'Name is required'),

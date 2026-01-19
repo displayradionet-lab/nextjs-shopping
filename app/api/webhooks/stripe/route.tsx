@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-      const orderId = session.metadata.orderId;
+      const orderId = session?.metadata?.orderId;
       
       console.log('Checkout session completed');
       console.log('Order ID from metadata:', orderId);
