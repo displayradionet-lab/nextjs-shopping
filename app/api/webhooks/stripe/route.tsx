@@ -6,37 +6,51 @@ import { sendPurchaseReceipt } from '@/emails';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export async function POST(req: NextRequest) {
-  const event: Stripe.Event = stripe.webhooks.constructEvent(
-    await req.text(),
-    req.headers.get('stripe-signature') as string,
-    process.env.STRIPE_WEBHOOK_SECRET as string
-  );
+  try {
+    const body = await req.text();
+    const signature = req.headers.get('stripe-signature');
+    
+    const event: Stripe.Event = stripe.webhooks.constructEvent(
+      body,
+      signature as string,
+      process.env.STRIPE_WEBHOOK_SECRET as string
+    );
 
-  if (event.type === 'charge.succeeded') {
-    const charge = event.data.object;
-    const orderId = charge.metadata.orderId;
-    const email = charge.billing_details.email;
-    const pricePaidInCents: number = charge.amount;
-    const order = await Order.findById(orderId).populate('user', 'email');
-    if (order == null) {
-      return new NextResponse('Bad Request', { status: 400 });
-    }
+    if (event.type === 'charge.succeeded') {
+      const charge = event.data.object;
+      const orderId = charge.metadata.orderId;
+      const email = charge.billing_details.email;
+      const pricePaidInCents: number = charge.amount;
+      
+      const order = await Order.findById(orderId).populate('user', 'email');
+      if (order == null) {
+        return new NextResponse('Bad Request', { status: 400 });
+      }
 
-    order.isPaid = true;
-    order.paidAt = new Date();
-    order.paymentResult = {
-      id: event.id,
-      status: 'COMPLETED',
-      email_address: email!,
-      pricePaid: parseFloat((pricePaidInCents / 100).toFixed(2)),
-    };
-    await order.save()
-    try {
+      order.isPaid = true;
+      order.paidAt = new Date();
+      order.paymentResult = {
+        id: event.id,
+        status: 'COMPLETED',
+        email_address: email!,
+        pricePaid: parseFloat((pricePaidInCents / 100).toFixed(2)),
+      };
+      await order.save();
+      
+      try {
         await sendPurchaseReceipt({ order });
-    } catch (error) {
-        console.log('email error', error);
+        console.log('Email sent successfully to:', (order.user as { email: string }).email);
+      } catch (error) {
+        console.log('Email error:', error);
+        // Don't fail the webhook if email fails
+      }
+      
+      return NextResponse.json({ message: 'Order updated to paid successfully' });
     }
-    return NextResponse.json({ message: 'update Order to paid successfully' });
+    
+    return new NextResponse();
+  } catch (error) {
+    console.error('Webhook error:', error);
+    return new NextResponse('Webhook Error', { status: 400 });
   }
-  return new NextResponse()
 }
