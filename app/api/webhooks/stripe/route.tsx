@@ -38,10 +38,14 @@ export async function POST(req: NextRequest) {
       await order.save();
       
       try {
+        console.log('Attempting to send email to order user...');
+        const userEmail = (order.user as { email: string }).email;
+        console.log('User email:', userEmail);
+        
         await sendPurchaseReceipt({ order });
-        console.log('Email sent successfully to:', (order.user as { email: string }).email);
+        console.log('✅ Email sent successfully to:', userEmail);
       } catch (error) {
-        console.log('Email error:', error);
+        console.log('❌ Email error:', error.message);
         // Don't fail the webhook if email fails
       }
       
