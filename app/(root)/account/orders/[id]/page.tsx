@@ -5,7 +5,8 @@ import { getOrderById } from "@/lib/actions/order.actions";
 import { formatId } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
+import { redirect } from "next/navigation";
+import OrderSuccessClient from "@/components/shared/order/order-success-client";
 
 export async function generateMetadata(props: {
     params: Promise<{
@@ -35,6 +36,7 @@ export default async function OrderDetailsPage(props: {
 
     return (
         <>
+        <OrderSuccessClient />
         <div className="flex gap-2">
             <Link href="/account">Your Account</Link>
             <span></span>

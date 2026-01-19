@@ -2,9 +2,8 @@ import { Document, Model, model, models, Schema } from 'mongoose';
 import { IProductInput } from '@/types';
 
 export interface IProduct extends Document, IProductInput {
-  // _id: string;
-  // createdAt: string;
-  // updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -37,13 +36,6 @@ const productSchema = new Schema<IProduct>(
     ],
     numSales: { type: Number, required: true, default: 0 },
     isPublished: { type: Boolean, required: true, default: false },
-    reviews: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Review',
-        default: [],
-      },
-    ],
   },
   {
     timestamps: true,

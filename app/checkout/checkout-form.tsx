@@ -36,8 +36,8 @@ import { ShippingAddress } from '@/types';
 import useIsMounted from '@/hooks/use-is-mounted';
 import Link from 'next/link';
 import useCartStore from '@/hooks/use-cart-store';
-// import useSettingStore from '@/hooks/use-setting-store';
 import ProductPrice from '@/components/shared/product/product-price';
+import CheckoutButton from '@/components/shared/stripe-checkout-button';
 import {
   APP_NAME,
   AVAILABLE_DELIVERY_DATES,
@@ -117,6 +117,8 @@ const CheckoutForm = () => {
   const [isDeliveryDateSelected, setIsDeliveryDateSelected] =
     useState<boolean>(false);
 
+  const [orderId, setOrderId] = useState<string>('');
+
   const handlePlaceOrder = async () => {
     console.log('Placing order with data:', {
       items,
@@ -151,9 +153,16 @@ const CheckoutForm = () => {
     if (!res.success) {
       toast(res.error || 'Something went wrong')
     } else {
-      toast('Success')
-      clearCart()
-      router.push(`/checkout/${res.data?.orderId}`)
+      if (paymentMethod === 'Stripe') {
+        // For Stripe, save order ID and redirect to checkout
+        setOrderId(res.data?.orderId.toString() || '');
+        toast('Order created! Redirecting to payment...');
+      } else {
+        // For other payment methods, clear cart and redirect
+        toast('Success')
+        clearCart()
+        router.push(`/checkout/${res.data?.orderId}`)
+      }
     }
   };
 
@@ -199,9 +208,21 @@ const CheckoutForm = () => {
         )}
         {isPaymentMethodSelected && isAddressSelected && (
           <div>
-            <Button onClick={handlePlaceOrder} className="rounded-full w-full">
-              Place Your Order
-            </Button>
+            {paymentMethod === 'Stripe' && orderId ? (
+              <div className="space-y-4">
+                <div className="text-green-700 font-semibold">
+                  Order created! Complete payment below:
+                </div>
+                <CheckoutButton 
+                  orderId={orderId} 
+                  className="rounded-full w-full" 
+                />
+              </div>
+            ) : (
+              <Button onClick={handlePlaceOrder} className="rounded-full w-full">
+                Place Your Order
+              </Button>
+            )}
             <p className="text-xs text-center py-2">
               By placing your order, you agree to {APP_NAME}&apos;s{' '}
               <Link href="/page/privacy-policy">privacy notice</Link> and
@@ -697,9 +718,21 @@ const CheckoutForm = () => {
 
               <Card className="hidden md:block ">
                 <CardContent className="p-4 flex flex-col md:flex-row justify-between items-center gap-3">
-                  <Button onClick={handlePlaceOrder} className="rounded-full">
-                    Place Your Order
-                  </Button>
+                  {paymentMethod === 'Stripe' && orderId ? (
+                    <div className="flex flex-col space-y-3">
+                      <div className="text-green-700 font-semibold">
+                        Order created! Complete payment below:
+                      </div>
+                      <CheckoutButton 
+                        orderId={orderId} 
+                        className="rounded-full" 
+                      />
+                    </div>
+                  ) : (
+                    <Button onClick={handlePlaceOrder} className="rounded-full">
+                      Place Your Order
+                    </Button>
+                  )}
                   <div className="flex-1">
                     <p className="font-bold text-lg">
                       Order Total: <ProductPrice price={totalPrice} plain />

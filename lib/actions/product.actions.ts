@@ -53,9 +53,35 @@ export async function getProductsByCategory({
 
   const products = await Product.find({ category, isPublished: true })
     .sort({ createdAt: 'desc' })
-    .limit(limit);
+    .limit(limit)
+    .lean();
 
-  return JSON.parse(JSON.stringify(products)) as IProductData[];
+  // Convert ObjectId to string for client-side serialization
+  return products.map(product => ({
+    _id: product._id.toString(),
+    name: product.name,
+    slug: product.slug,
+    category: product.category,
+    images: product.images,
+    brand: product.brand,
+    description: product.description,
+    price: product.price,
+    listPrice: product.listPrice,
+    countInStock: product.countInStock,
+    tags: product.tags,
+    colors: product.colors,
+    sizes: product.sizes,
+    avgRating: product.avgRating,
+    numReviews: product.numReviews,
+    ratingDistribution: product.ratingDistribution?.map(item => ({
+      rating: item.rating,
+      count: item.count,
+    })) || [],
+    numSales: product.numSales,
+    isPublished: product.isPublished,
+    createdAt: product.createdAt,
+    updatedAt: product.updatedAt,
+  })) as IProductData[];
 }
 
 export async function getProductsForCardByCategory({
@@ -101,17 +127,69 @@ export async function getProductsByTag({
     isPublished: true,
   })
     .sort({ createdAt: 'desc' })
-    .limit(limit);
+    .limit(limit)
+    .lean();
 
-  return JSON.parse(JSON.stringify(products)) as IProductData[];
+  // Convert ObjectId to string for client-side serialization
+  return products.map(product => ({
+    _id: product._id.toString(),
+    name: product.name,
+    slug: product.slug,
+    category: product.category,
+    images: product.images,
+    brand: product.brand,
+    description: product.description,
+    price: product.price,
+    listPrice: product.listPrice,
+    countInStock: product.countInStock,
+    tags: product.tags,
+    colors: product.colors,
+    sizes: product.sizes,
+    avgRating: product.avgRating,
+    numReviews: product.numReviews,
+    ratingDistribution: product.ratingDistribution?.map(item => ({
+      rating: item.rating,
+      count: item.count,
+    })) || [],
+    numSales: product.numSales,
+    isPublished: product.isPublished,
+    createdAt: product.createdAt,
+    updatedAt: product.updatedAt,
+  })) as IProductData[];
 }
 
 // GET PRODUCT BY SLUG
-export async function getProductBySlug(slug: string) {
+export async function getProductBySlug(slug: string): Promise<IProductData> {
   await connectToDatabase();
-  const product = await Product.findOne({ slug, isPublished: true });
+  const product = await Product.findOne({ slug, isPublished: true }).lean();
   if (!product) throw new Error('Product not found');
-  return JSON.parse(JSON.stringify(product)) as IProductData;
+  
+  // Convert ObjectId to string for client-side serialization
+  return {
+    _id: product._id.toString(),
+    name: product.name,
+    slug: product.slug,
+    category: product.category,
+    images: product.images,
+    brand: product.brand,
+    description: product.description,
+    price: product.price,
+    listPrice: product.listPrice,
+    countInStock: product.countInStock,
+    tags: product.tags,
+    colors: product.colors,
+    sizes: product.sizes,
+    avgRating: product.avgRating,
+    numReviews: product.numReviews,
+    ratingDistribution: product.ratingDistribution?.map(item => ({
+      rating: item.rating,
+      count: item.count,
+    })) || [],
+    numSales: product.numSales,
+    isPublished: product.isPublished,
+    createdAt: product.createdAt,
+    updatedAt: product.updatedAt,
+  } as IProductData;
 }
 
 // GET RELATED PRODUCTS: PRODUCTS WITH SAME CATEGORY
@@ -137,10 +215,37 @@ export async function getRelatedProductsByCategory({
   const products = await Product.find(conditions)
     .sort({ numSales: 'desc' })
     .skip(skipAmount)
-    .limit(limit);
+    .limit(limit)
+    .lean();
   const productsCount = await Product.countDocuments(conditions);
+  
+  // Convert ObjectId to string for client-side serialization
   return {
-    data: JSON.parse(JSON.stringify(products)) as IProductData[],
+    data: products.map(product => ({
+      _id: product._id.toString(),
+      name: product.name,
+      slug: product.slug,
+      category: product.category,
+      images: product.images,
+      brand: product.brand,
+      description: product.description,
+      price: product.price,
+      listPrice: product.listPrice,
+      countInStock: product.countInStock,
+      tags: product.tags,
+      colors: product.colors,
+      sizes: product.sizes,
+      avgRating: product.avgRating,
+      numReviews: product.numReviews,
+      ratingDistribution: product.ratingDistribution?.map(item => ({
+      rating: item.rating,
+      count: item.count,
+    })) || [],
+      numSales: product.numSales,
+      isPublished: product.isPublished,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
+    })) as IProductData[],
     totalPages: Math.ceil(productsCount / limit),
   };
 }

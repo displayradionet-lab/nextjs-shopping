@@ -24,12 +24,39 @@ export const GET = async (request: NextRequest) => {
      }
 
     await connectToDatabase();
-    const products = await Product.find(filter);
+    const products = await Product.find(filter).lean();
     if(listType === 'history') {
         products.sort((a, b) => 
           productIds.indexOf(a._id.toString()) - productIds.indexOf(b._id.toString())  
         )
     }
 
-    return NextResponse.json(products);
+    // Convert ObjectId to string and serialize ratingDistribution
+    const serializedProducts = products.map(product => ({
+        _id: product._id.toString(),
+        name: product.name,
+        slug: product.slug,
+        category: product.category,
+        images: product.images,
+        brand: product.brand,
+        description: product.description,
+        price: product.price,
+        listPrice: product.listPrice,
+        countInStock: product.countInStock,
+        tags: product.tags,
+        colors: product.colors,
+        sizes: product.sizes,
+        avgRating: product.avgRating,
+        numReviews: product.numReviews,
+        ratingDistribution: product.ratingDistribution?.map(item => ({
+            rating: item.rating,
+            count: item.count,
+        })) || [],
+        numSales: product.numSales,
+        isPublished: product.isPublished,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+    }));
+
+    return NextResponse.json(serializedProducts);
 }

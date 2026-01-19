@@ -15,9 +15,10 @@ import AddToBrowsingHistory from '@/components/shared/product/add-to-browsing-hi
 import AddToCart from '@/components/shared/product/add-to-cart';
 import { generateId, round2 } from '@/lib/utils';
 
-// import RatingSummary from '@/components/shared/product/rating-summary';
-// import ReviewList from './review-list';
-// import { auth } from '@/auth';
+import RatingSummary from '@/components/shared/product/rating-summary';
+import ReviewList from './review-list';
+import { auth } from '@/auth';
+import { IProductData } from '@/types';
 
 export async function generateMetadata(props: {
     params: Promise<{ slug: string }>;
@@ -53,7 +54,7 @@ export default async function ProductDetails(props: {
         page: Number(page || '1'),
     });
 
-    //   const session = await auth();
+    const session = await auth();
 
     return (
         <div>
@@ -71,9 +72,11 @@ export default async function ProductDetails(props: {
                             </p>
                             <h1 className="font-bold text-lg lg:text-xl">{product.name}</h1>
                             <div className='flex gap-2 item-center'>
-                                <span>{product.avgRating.toFixed(1)}</span>
-                                <Rating rating={product.avgRating} />
-                                <span>{product.numReviews} reviews</span>
+                                <RatingSummary
+                                    avgRating={product.avgRating}
+                                    numReviews={product.numReviews}
+                                    asPopover
+                                    ratingDistribution={product.ratingDistribution} />
                             </div>
                             <Separator />
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -90,7 +93,7 @@ export default async function ProductDetails(props: {
 
                         <div>
                             <SelectVariant
-                                product={product}
+                                product={product as unknown as IProductData}
                                 size={size || product.sizes[0]}
                                 color={color || product.colors[0]}
                             />
@@ -142,6 +145,9 @@ export default async function ProductDetails(props: {
                         )}
                     </div>
                 </div>
+            </section>
+            <section className="mt-10">
+                <ReviewList product={product as IProductData} userId={session?.user?.id} />
             </section>
 
             <section className="mt-10">
