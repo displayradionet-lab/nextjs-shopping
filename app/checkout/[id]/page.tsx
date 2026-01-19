@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-// import Stripe from "stripe";
+import Stripe from "stripe";
 import React from 'react'
 import { getOrderById } from "@/lib/actions/order.actions";
 import { notFound } from "next/navigation";
@@ -23,15 +23,15 @@ const CheckoutPaymentPage = async (props: {
     const session = await auth();
 
     let client_secret = null
-    // if (order.paymentMethod === 'Stripe' && !order.isPaid) {
-    //     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
-    //     const paymentIntent = await stripe.paymentIntents.create({
-    //         amount: Math.round(order.totalPrice * 100),
-    //         currency: 'USD',
-    //         metadata: { orderId: order._id.toString() },
-    //     })
-    //     client_secret = paymentIntent.client_secret        
-    //     }          
+    if (order.paymentMethod === 'Stripe' && !order.isPaid) {
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: Math.round(order.totalPrice * 100),
+            currency: 'USD',
+            metadata: { orderId: order._id.toString() },
+        })
+        client_secret = paymentIntent.client_secret        
+        }          
             
 
     return (

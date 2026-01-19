@@ -18,9 +18,9 @@ import CheckoutFooter from '../Checkout-Footer';
 import { redirect, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import ProductPrice from '@/components/shared/product/product-price';
-// import { loadStripe } from '@stripe/stripe-js';
-// import { Elements } from '@stripe/react-stripe-js';
-// import StripeForm from './stripe-form';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import StripeForm from './stripe-form';
 
 
 export default function OrderPaymentForm({
@@ -92,8 +92,6 @@ export default function OrderPaymentForm({
       console.error('PayPal approval error:', error);
     }
   };
-
-  
   
   const CheckoutSummary = () => (
     <Card>
@@ -157,7 +155,7 @@ export default function OrderPaymentForm({
               </div>
             )}
 
-            {/* {!isPaid && paymentMethod?.toLowerCase() === 'stripe' && clientSecret && (
+            {!isPaid && paymentMethod?.toLowerCase() === 'stripe' && clientSecret && (
               <Elements
               options={{
                 clientSecret,
@@ -166,10 +164,10 @@ export default function OrderPaymentForm({
               >
                 <StripeForm
                 priceInCents={Math.round(order.totalPrice * 100 )}
-                orderId={order._id}
+                orderId={order._id.toString()}
                  />
               </Elements>
-            )} */}
+            )}
 
             {!isPaid && paymentMethod === 'Cash On Delivery' && (
               <Button
@@ -185,7 +183,7 @@ export default function OrderPaymentForm({
     </Card>
   );
 
-// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
   
   return (
     <main className="max-w-full mx-auto">
