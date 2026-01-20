@@ -3,27 +3,28 @@
 import { cn, formatCurrency } from '@/lib/utils';
 
 const ProductPrice = ({
-  price,  
+  price = 0,  
   className,
   listPrice = 0,
   isDeal = false,
   forListing = true,
   plain = false,
 }: {
-  price: number;
+  price?: number;
   isDeal?: boolean;
   listPrice?: number;
   className?: string;
   forListing?: boolean;
   plain?: boolean;
 }) => {
-  const discountPercent = Math.round(100 - (price / listPrice) * 100);
-  const stringValue = price.toString();
+  const safePrice = price || 0;
+  const discountPercent = Math.round(100 - (safePrice / listPrice) * 100);
+  const stringValue = safePrice.toString();
   const [intValue, floatValue] = stringValue.split('.')
     ? stringValue.split('.')
     : [stringValue, ''];
   return plain ? (
-    formatCurrency(price)
+    formatCurrency(safePrice)
   ) : listPrice == 0 ? (
     <div className={cn(`text-3xl`, className)}>
       <span className="text-xs align-super">$</span>

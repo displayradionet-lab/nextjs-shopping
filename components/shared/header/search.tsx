@@ -9,11 +9,11 @@ import { SearchIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 import { APP_NAME } from '@/lib/constants';
-// import { getAllCategories } from '@/lib/actions/product.actions';
+import { getAllCategories } from '@/lib/actions/product.actions';
 
 
 export default async function Search() {
-//   const categories = await getAllCategories();
+  const categories = await getAllCategories();
   return (
     <form action="/search" method="GET" className="flex items-stretch h-9">
       <Select name="category">
@@ -21,14 +21,14 @@ export default async function Search() {
          text-black border-r rounded-r-none rounded-l-md ">
           <SelectValue placeholder="All" />
         </SelectTrigger>
-        {/* <SelectContent position="popper">
+        <SelectContent position="popper">
           <SelectItem value="all">All</SelectItem>
           {categories.map((category) => (
             <SelectItem key={category} value={category}>
               {category}
             </SelectItem>
           ))}
-        </SelectContent> */}
+        </SelectContent>
       </Select>
       <Input
         name="q"

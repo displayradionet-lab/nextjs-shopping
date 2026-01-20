@@ -31,13 +31,13 @@ const ProductCard = ({
           <ImageHover
             src={product.images[0]}
             hoverSrc={product.images[1]}
-            alt={product.name}
+            alt={product.name || 'Product image'}
           />
         ) : (
           <div className="relative h-full w-full">
             <Image
               src={product.images?.[0] || '/images/banner1.jpg'}
-              alt={product.name}
+              alt={product.name || 'Product image'}
               fill
               sizes="70vw"
               className="object-contain"
@@ -68,7 +68,7 @@ const ProductCard = ({
       </div>
 
       <ProductPrice
-        isDeal={product.tags.includes('todays-deal')}
+        isDeal={product.tags?.includes('todays-deal') || false}
         price={product.price}
         listPrice={product.listPrice}
         forListing
