@@ -326,7 +326,12 @@ export default async function SearchPage(props: {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {data?.products?.length === 0 && <div>No products found</div>}
             {data?.products?.map((product) => (
-              <ProductCard key={product._id.toString()} product={product as IProductData} />
+              <ProductCard key={product._id.toString()} product={{
+                ...product,
+                _id: product._id.toString(),
+                createdAt: product.createdAt,
+                updatedAt: product.updatedAt
+              } as IProductData} />
             ))}
           </div>
           {data!.totalPages! > 1 && (
