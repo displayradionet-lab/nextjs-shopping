@@ -94,4 +94,7 @@ body {
   .flex-between {
     @apply flex items-center justify-between;
   }
+  .item-button {
+    @apply p-3 hover:bg-muted hover:no-underline;
+  }
 }
