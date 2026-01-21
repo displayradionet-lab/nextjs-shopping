@@ -25,7 +25,7 @@ export function HomeCard({ cards }: { cards: CardItem[] }) {
             <div className="grid grid-cols-2 gap-4">
               {card.items.map((item) => (
                 <Link
-                  key={item.name}
+                  key={`${card.title}-${item.name}`}
                   href={item.href}
                   className="flex flex-col"
                 >

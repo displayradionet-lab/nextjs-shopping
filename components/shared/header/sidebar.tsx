@@ -25,17 +25,17 @@ export default async function Sidebar({
         <MenuIcon className="h-5 w-5 mr-1" />
         All
       </DrawerTrigger>
-      <DrawerContent className="w-[350px] mt-0 top-0">
+      <DrawerContent className="w-[300px] mt-0 top-0">
         <div className="flex flex-col h-full">
           {/* User Sign In Section */}
           <div className="dark bg-gray-800 text-foreground flex items-center justify-between">
             <DrawerHeader>
               <DrawerTitle className="flex items-center">
-                <UserCircle className="h-6 w-6 mr-2 "/>
+                <UserCircle className="h-6 w-6 mr-2 text-white "/>
                 {session ? (
                   <DrawerClose asChild>
                     <Link href="/account">
-                      <span className="text-lg font-semibold">
+                      <span className="text-lg text-white font-semibold">
                         Hello, {session.user.name}
                       </span>
                     </Link>
@@ -63,9 +63,9 @@ export default async function Sidebar({
           {/* Shop by category */}
           <div className="flex-1 overflow-auto">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">Shop by Department</h2>
+              <h2 className="text-lg text-blue-900 font-semibold">Shop by Department</h2>
             </div>
-            <nav className="flex flex-col">
+            <nav className="flex flex-col text-blue-900">
               {categories.map((category) => (
                 <DrawerClose asChild key={category}>
                   <Link
@@ -81,7 +81,7 @@ export default async function Sidebar({
           </div>
 
           {/* Setting and help */}
-          <div className="border-t flex flex-col">
+          <div className="border-t flex flex-col text-blue-900 light:text-foreground">
             <div className="p-4">
               <h2 className="text-lg font-semibold">Setting and help</h2>
             </div>
