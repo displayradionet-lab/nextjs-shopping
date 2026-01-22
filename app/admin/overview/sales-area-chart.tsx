@@ -7,6 +7,7 @@ import useColorStore from '@/hooks/use-color-store'
 import { formatDateTime } from '@/lib/utils'
 import { useTheme } from 'next-themes'
 import React from 'react'
+
 import {
   Area,
   AreaChart,
@@ -48,14 +49,14 @@ const CustomXAxisTick: React.FC<any> = ({ x, y, payload }) => {
   return (
     <text x={x} y={y + 10} textAnchor='start' fill='#666' className='text-xs'>
       {payload && formatDateTime(new Date(payload)).dateOnly}
-      {/* {`${payload.split('/')[1]}/${payload.split('/')[2]}`} */}
+    
     </text>
   )
 }
 const STROKE_COLORS: { [key: string]: { [key: string]: string } } = {
   Red: { light: '#980404', dark: '#ff3333' },
   Green: { light: '#015001', dark: '#06dc06' },
-  Gold: { light: '#ac9103', dark: '#f1d541' },
+  Yellow: { light: '#ac9103', dark: '#f1d541' },
 }
 
 export default function SalesAreaChart({ data }: { data: any[] }) {
@@ -74,7 +75,7 @@ export default function SalesAreaChart({ data }: { data: any[] }) {
   return (
     <ResponsiveContainer width='100%' height={400}>
       <AreaChart data={data}>
-        <CartesianGrid horizontal={true} vertical={false} stroke='' />
+        <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
         <XAxis dataKey='date' tick={<CustomXAxisTick />} interval={3} />
         <YAxis fontSize={12} tickFormatter={(value: number) => `$${value}`} />
         <Tooltip content={<CustomTooltip />} />
@@ -88,5 +89,5 @@ export default function SalesAreaChart({ data }: { data: any[] }) {
         />
       </AreaChart>
     </ResponsiveContainer>
-  )
+      )
 }

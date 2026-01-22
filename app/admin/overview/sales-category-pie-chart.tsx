@@ -58,11 +58,11 @@ export default function SalesCategoryPieChart({ data }: { data: any[] }) {
 
   // Different colors for pie slices
   const COLORS = [
-    `hsl(${cssColors['--primary']})`,
-    `hsl(${cssColors['--chart-1'] || 'hsl(47.1, 95.8%, 53.1%)'})`,
-    `hsl(${cssColors['--chart-2'] || 'hsl(142.1, 76.2%, 36.3%)'})`,
-    `hsl(${cssColors['--chart-3'] || 'hsl(210, 100%, 57.8%)'})`,
-    `hsl(${cssColors['--chart-4'] || 'hsl(342.9, 89.2%, 55.5%)'})`,
+    cssColors['--primary'] || 'hsl(47.1, 95.8%, 53.1%)',
+    cssColors['--chart-1'] || 'hsl(142.1, 76.2%, 36.3%)',
+    cssColors['--chart-2'] || 'hsl(210, 100%, 57.8%)',
+    cssColors['--chart-3'] || 'hsl(342.9, 89.2%, 55.5%)',
+    cssColors['--chart-4'] || 'hsl(280, 100%, 50%)',
   ]
 
   console.log('Rendering pie chart with data:', data)
